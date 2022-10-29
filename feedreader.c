@@ -51,7 +51,7 @@ void parse_args (int argc, char **argv) {
             if (!url) url = argv[i];
             else {argument = "URL adresa"; ERROR_MESSAGE_WITH_ARG(ERR_M_SAME_ARGS, argument);}
         }
-    }   
+    }
 }
 
 void check_args () {
@@ -63,21 +63,9 @@ void check_args () {
     }
 }
 
-int feedfile_open (FILE *file) {
-    file = fopen(feedfile, "r");
-    if (file is NULL) {
-        return ERROR_INTERN;
-    }
-    return SUCCESS;
-}
-
-void feedfile_close (FILE *file) {
-    fclose(file);
-}
-
 int get_new_url(FILE *file, char *line, int buffer) {
     while (1) {
-        if (fgets(line, buffer - 1, file) != NULL) return FEED_END;
+        if (fgets(line, buffer - 1, file) == NULL) return FEED_END;
         
         if (line[0] is '#' || line[0] is '\n') continue;
 
@@ -86,9 +74,8 @@ int get_new_url(FILE *file, char *line, int buffer) {
 }
 
 int main (int argc, char **argv) {
-    int return_code;
-
-    //feedreader_init();
+    int return_code = SUCCESS;
+    int program_code = SUCCESS;
 
     parse_args (argc, argv);
 
@@ -111,37 +98,46 @@ int main (int argc, char **argv) {
             return ERROR_XML;
         }
 
-        remove_tmp_file(TMP_FILENAME);
-
     } else {    // feedfile
 
-        FILE *file = NULL;
-        if (feedfile_open(file)) {
+        FILE *file = fopen(feedfile, "r");
+        if (file is NULL) {
             ERROR_MESSAGE_WITH_ARG(ERR_M_FEEDFILE_OPEN, feedfile);
             return ERROR_ARGUMENT_PARSE;
         }
 
         char line[BUFFER];
+        int write_new_line = 0;
         while (get_new_url(file, line, BUFFER) is SUCCESS) {
+            if (write_new_line) printf("\n");
             url = line;
+
+            // Odstranění případného znaku '\n'
+
+            // -----              -----
+            // Taken code from stackoverflow.com
+            // url: https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
+            // answer author: https://stackoverflow.com/users/485088/tim-%c4%8cas
+            url[strcspn(url, "\n")] = 0;
+            // -----              -----
 
             return_code = ssl_url_process(TMP_FILENAME, url, certaddr, certfile);
             free_ssl();
             if (return_code) {
-                printf("\n");
+                program_code = return_code;
                 continue;
             }
 
-            if (xml_process(TMP_FILENAME, write_time, write_url, write_author)) {
-                printf("\n");
+            return_code = xml_process(TMP_FILENAME, write_time, write_url, write_author);
+            if (return_code) {
+                program_code = return_code;
                 continue;
             }
-
-            printf("\n");
+            write_new_line = 1;            
         }
 
-        feedfile_close(file);
+        fclose(file);
     }
-        
-    return SUCCESS;
+    remove_tmp_file(TMP_FILENAME);        
+    return program_code;
 }
