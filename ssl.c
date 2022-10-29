@@ -1,5 +1,14 @@
 #include "ssl.h"
 
+    SSL_CTX* ctx = NULL;
+    BIO *web = NULL;
+    BIO * out_file = NULL;
+    SSL *ssl = NULL;
+
+    char *host_domain = NULL;
+    char *host_port = NULL;
+    char *host_path = NULL;
+
 int ssl_url_process (char *tmp_filename, char *url_address, char *certaddr, char *certfile) {
     char conn_hostname[BUFFER] = {};
     char request[BUFFER] = {};
@@ -87,14 +96,6 @@ void init_ssl () {
     SSL_load_error_strings();
     ERR_load_BIO_strings();
     OpenSSL_add_all_algorithms();
-
-    ctx = NULL;
-    web = NULL, out_file = NULL;
-    ssl = NULL;
-
-    host_domain = NULL;
-    host_port = NULL;
-    host_path = NULL;
 }
 
 void free_ssl () {

@@ -12,14 +12,6 @@
 #define is ==
 #define BUFFER 1024
 
-SSL_CTX* ctx;
-BIO *web, *out_file;
-SSL *ssl;
-
-char *host_domain;
-char *host_port;
-char *host_path;
-
 void init_ssl ();
 void free_ssl ();
 int ctx_ctor ();

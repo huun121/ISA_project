@@ -1,14 +1,12 @@
 #include "feedreader.h"
 
-void feedreader_init () {
-    write_time = 0;
-    write_author = 0;
-    write_url = 0;
-    certfile = NULL;
-    certaddr = NULL;
-    url = NULL;
-    feedfile = NULL;
-}
+int write_time = 0;
+int write_author = 0;
+int write_url = 0;
+char *certfile = NULL;
+char *certaddr = NULL;
+char *url = NULL;
+char *feedfile = NULL;
 
 void parse_args (int argc, char **argv) {
     (void) argc;
@@ -89,6 +87,8 @@ int get_new_url(FILE *file, char *line, int buffer) {
 
 int main (int argc, char **argv) {
     int return_code;
+
+    //feedreader_init();
 
     parse_args (argc, argv);
 
