@@ -15,10 +15,11 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 * atom_parser.c
 * atom_parser.h
 * error_handling.h
+* feedreader_logic.c
+* feedreader_logic.h
 * feedreader_tester.c
 * feedreader_tester.h
 * feedreader.c
-* feedreader.h
 * makefile
 * README.md - základní informace o projektu
 * manual.pdf - manuál
