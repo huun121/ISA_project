@@ -9,8 +9,21 @@
 
 #include "error_handling.h"
 
+#define HTTPS 0
+#define HTTP 1
+
+
+#ifndef is
 #define is ==
+#endif
+
+#ifndef BUFFER
 #define BUFFER 1024
+#endif
+
+#ifndef BUFFER_SMALL
+#define BUFFER_SMALL 256
+#endif
 
 void init_ssl ();
 void free_ssl ();
@@ -24,5 +37,8 @@ int url_split (const char *prefix, char *url_address);
 int url_parse (char *url_address);
 
 int remove_tmp_file (char *tmp_filename);
+
+int http_conection (const char *conn_hostname);
+int https_conection (const char *conn_hostname, char *certaddr, char *certfile);
 
 #endif

@@ -10,6 +10,8 @@
 #define ERR_M_INTERN "Chyba: interní chyba programu\n"
 #define ERR_M_XML "Chyba: nebylo možné zpracovat xml soubor\n"
 #define ERR_M_FEEDFILE_OPEN "Chyba: nebylo možné otevřít soubor: %s\n"
+#define ERR_M_FILE "Chyba: chyba při práci se soubory\n"
+#define ERR_M_CONNECTION "Chyba: nepodařilo se navázat spojení s %s\n"
 
 #define ERROR_MESSAGE(_message) fprintf(stderr, _message)
     
@@ -22,8 +24,9 @@
 
 #define SUCCESS 0
 #define ERROR_ARGUMENT_PARSE 1
-#define ERROR_SSL 2
-#define ERROR_XML 3
+#define ERROR_ARGUMENT_PARSE_URL 2
+#define ERROR_SSL 3
+#define ERROR_XML 4
 #define ERROR_UNDEFINED 9
 #define ERROR_INTERN 42
 

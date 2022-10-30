@@ -1,73 +1,52 @@
 #include "ssl.h"
 
-    SSL_CTX* ctx = NULL;
-    BIO *web = NULL;
-    BIO * out_file = NULL;
-    SSL *ssl = NULL;
+SSL_CTX* ctx = NULL;
+BIO *web = NULL;
+BIO * out_file = NULL;
+SSL *ssl = NULL;
 
-    char *host_domain = NULL;
-    char *host_port = NULL;
-    char *host_path = NULL;
+char *host_domain = NULL;
+char *host_port = NULL;
+char host_path[BUFFER_SMALL];
+
+int http = HTTPS;
 
 int ssl_url_process (char *tmp_filename, char *url_address, char *certaddr, char *certfile) {
-    char conn_hostname[BUFFER] = {};
-    char request[BUFFER] = {};
+    char conn_hostname[BUFFER];
+    char request[BUFFER];
 
-    if (url_parse(url_address)) return ERROR_ARGUMENT_PARSE;
-
-    ctx_ctor();
-
-    if (ctx_set_cert_location(certaddr, certfile)) {
-        return ERROR_SSL;
-    }
-    
-    web = BIO_new_ssl_connect(ctx);
-    if (web is NULL) {
-        ERROR_MESSAGE(ERR_M_SSL_TLS);
-        return ERROR_SSL;
-    }
-
+    if (url_parse(url_address)) return ERROR_ARGUMENT_PARSE_URL;
     make_conn_hostname(conn_hostname, host_domain, host_port);
+
+    if (http) {
+        if (http_conection(conn_hostname)) {
+            return ERROR_SSL;
+        }
+    } else {
+        if (https_conection(conn_hostname, certaddr, certfile)) {
+            return ERROR_SSL;
+        }
+    }
     
-    if (!BIO_set_conn_hostname(web, conn_hostname)) {
-        ERROR_MESSAGE(ERR_M_SSL_TLS);
-        return ERROR_SSL;
-    }
-
-    BIO_get_ssl(web, &ssl);
-    SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
-
-    if (ssl is NULL) {
-        ERROR_MESSAGE(ERR_M_SSL_TLS);
-        return ERROR_SSL;
-    }
-
     // vytvoření dočasného souboru
     out_file = BIO_new_file(tmp_filename, "w");
     if (out_file is NULL) {
-        ERROR_MESSAGE(ERR_M_SSL_TLS);
-        return ERROR_SSL;
-    }
-    
-    if (!BIO_do_connect(web)) {
-        ERROR_MESSAGE(ERR_M_SSL_TLS);
+        ERROR_MESSAGE(ERR_M_FILE);
+        free_ssl();
         return ERROR_SSL;
     }
 
-    if(SSL_get_verify_result(ssl) != X509_V_OK) {
-        ERROR_MESSAGE(ERR_M_SSL_TLS);
-        return ERROR_SSL;
-    }
-
+    // odeslání dotazu
     sprintf(request, "GET %s HTTP/1.0\r\nHost:  %s \r\nConnection: close\r\n\r\n", host_path, host_domain);
     BIO_puts(web, request);
 
+    // čtení
     int len = 0;
     int header = 0;
     do {
         char buff[BUFFER] = {};
 
-        len = BIO_read(web, buff, sizeof(buff));
+        len = BIO_read(web, buff, sizeof(buff)-1);
         
         if(len > 0) {
             // odebrání http hlavičky
@@ -85,9 +64,64 @@ int ssl_url_process (char *tmp_filename, char *url_address, char *certaddr, char
         }
     } while (len > 0 || BIO_should_retry(web));
 
-    BIO_reset(out_file);
-    BIO_reset(web);
+    free_ssl();
 
+    return SUCCESS;
+}
+
+int http_conection (const char *conn_hostname) {
+    web = BIO_new_connect(conn_hostname);
+    if(web is NULL) {
+        ERROR_MESSAGE_WITH_ARG(ERR_M_CONNECTION, host_domain);
+        return ERROR_INTERN;
+    }
+
+    if(BIO_do_connect(web) <= 0) {
+        ERROR_MESSAGE_WITH_ARG(ERR_M_CONNECTION, host_domain);
+        free_ssl();
+        return ERROR_INTERN;
+    }
+    return SUCCESS;
+}
+
+int https_conection (const char *conn_hostname, char *certaddr, char *certfile) {
+    ctx_ctor();
+
+    // pokud nejsou zadané použije SSL_CTX_set_default_verify_paths()
+    if (ctx_set_cert_location(certaddr, certfile)) {
+        return ERROR_SSL;
+    }
+    
+    web = BIO_new_ssl_connect(ctx);
+    if (web is NULL) {
+        ERROR_MESSAGE_WITH_ARG(ERR_M_CONNECTION, host_domain);
+        return ERROR_SSL;
+    }
+
+    BIO_get_ssl(web, &ssl);
+    SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
+    if (ssl is NULL) {
+        ERROR_MESSAGE_WITH_ARG(ERR_M_CONNECTION, host_domain);
+        return ERROR_SSL;
+    }
+
+    if (!BIO_set_conn_hostname(web, conn_hostname)) {
+        ERROR_MESSAGE_WITH_ARG(ERR_M_CONNECTION, host_domain);
+        return ERROR_SSL;
+    }
+
+    SSL_set_tlsext_host_name(ssl,host_domain);
+    
+    if (BIO_do_connect(web) <= 0) {
+        ERROR_MESSAGE_WITH_ARG(ERR_M_CONNECTION, host_domain);
+        free_ssl();
+        return ERROR_SSL;
+    }
+
+    if(SSL_get_verify_result(ssl) != X509_V_OK) {
+        ERROR_MESSAGE(ERR_M_SSL_TLS);
+        return ERROR_SSL;
+    }
     return SUCCESS;
 }
 
@@ -109,10 +143,7 @@ void free_ssl () {
         web = NULL;
     }
     
-    if(ctx != NULL) {
-        SSL_CTX_free(ctx); 
-        ctx = NULL;
-    }
+    ctx_dtor();
 }
 
 int ctx_ctor () {
@@ -139,6 +170,12 @@ int ctx_set_cert_location (char *certaddr, char *certfile) {
             return ERROR_INTERN;
         }
     } else {
+        // pokud se použije certaddr
+        if (certaddr != NULL) {
+            char command[BUFFER];
+            sprintf(command, "c_rehash %s >/dev/null", certaddr);
+            system(command);
+        }
         if (!SSL_CTX_load_verify_locations(ctx, certfile, certaddr)) {
             ERROR_MESSAGE(ERR_M_SSL_TLS);
             return ERROR_INTERN;
@@ -157,12 +194,14 @@ int url_parse (char *url_address) {
     // https nebo http
     if (!strncmp(url_address, "https://", strlen("https://"))) {
         host_port = "443";
+        http = HTTPS;
         if (url_split("https://", url_address)) {
             ERROR_MESSAGE(ERR_WRONG_URL);
             return ERROR_INTERN;
         }
     } else if (!strncmp(url_address, "http://", strlen("http://"))) {
         host_port = "80";
+        http = HTTP;
         if (url_split("http://", url_address)) {
             ERROR_MESSAGE(ERR_WRONG_URL);
             return ERROR_INTERN;
@@ -180,9 +219,11 @@ int url_split (const char *prefix, char *url_address) {
 
     // pokud není pouze prefix
 	if(host_domain != NULL) {
-		host_path = strtok(NULL, "\0");
-        if(host_path == NULL)
-            host_path = "/";
+		char *tmp = strtok(NULL, "\0");
+        if(tmp is NULL)
+            strcpy(host_path, "/");
+        else
+            sprintf(host_path, "/%s", tmp);
 	} else {
         ERROR_MESSAGE(ERR_WRONG_URL);
         return ERROR_INTERN;
@@ -191,6 +232,7 @@ int url_split (const char *prefix, char *url_address) {
 }
 
 int remove_tmp_file (char *tmp_filename) {
+    (void) tmp_filename;
     if (!remove(tmp_filename)) {
         return ERROR_INTERN;
     }
