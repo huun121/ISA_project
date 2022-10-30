@@ -8,6 +8,30 @@ char *certaddr = NULL;
 char *url = NULL;
 char *feedfile = NULL;
 
+void print_help () {
+    printf(\
+    "\rČtečka novinek ve formátu Atom a RSS s podporou TLS\n\
+    \rPoužití:\n\
+    ./feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]\n\
+    ./feedreader <-h | --help>\n\
+    \n\
+    \rArgumenty:\n\
+    - URL -> Url adresa zdroje\n\
+    - -f <feedfile> -> název souboru s url adresami zdrojů\n\
+    - -c <certfile> -> soubor s certifikáty pro ověření platnosti certifikátu SSL/TLS\n\
+    - -C <certaddr> -> adresář, ve kterém se mají vyhledávat certifikáty (SSL/TLS)\n\
+    - -T -> pro každý záznam zobrazí navíc informace o čase změny záznamu\n\
+    - -a -> pro každý záznam zobrazí jméno autora, či jeho e-mailová adresa\n\
+    - -u -> pro každý záznam zobrazí asociované URL\n\
+    - -h | --help -> zobrazí tuto nápovědu\n\
+    \n\
+    \rNávratové hodnoty:\n\
+    - 0 -> průběh bez chyby\n\
+    - > 0 -> objevila se chyba\n\
+    \n\
+    \rChybové hlášky jsou vypisovány na standartní chybový výstup.\n");
+}
+
 void parse_args (int argc, char **argv) {
     (void) argc;
     for (int i = 1; i < argc; i++) {
@@ -47,6 +71,9 @@ void parse_args (int argc, char **argv) {
             }
             if (!feedfile) feedfile = argv[i];
             else ERROR_MESSAGE_WITH_ARG(ERR_M_SAME_ARGS, argument);
+        } else if (!strcmp(argument, "-h") || !strcmp(argument, "--help")) {
+            print_help();
+            exit(SUCCESS);
         } else {
             if (!url) url = argv[i];
             else {argument = "URL adresa"; ERROR_MESSAGE_WITH_ARG(ERR_M_SAME_ARGS, argument);}
