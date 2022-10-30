@@ -100,6 +100,40 @@ int get_new_url(FILE *file, char *line, int buffer) {
     }
 }
 
+int xml_process () {
+    xmlDoc *doc = NULL;
+    xmlNode *root_node = NULL;
+
+    // otestování kompability
+    LIBXML_TEST_VERSION
+
+    doc = xmlReadFile(TMP_FILENAME, NULL, 0);
+    if (doc == NULL) {
+        ERROR_MESSAGE(ERR_M_XML);
+        return ERROR_XML;
+    }
+
+    // zisk kořene a výpis
+    root_node = xmlDocGetRootElement(doc);
+
+    if (!strcmp((char *)root_node->name, "feed")) {
+        atom_root_parse(root_node, write_time, write_url, write_author);
+    } else if (!strcmp((char *)root_node->name, "rss")) {
+        rss_root_parse(root_node, write_time, write_url, write_author);
+    } else {
+        ERROR_MESSAGE(ERR_M_XML_UNKNOWN);
+        xmlFreeDoc(doc);
+        xmlCleanupParser();
+        return ERROR_XML;
+    }
+
+    // vyčištění
+    xmlFreeDoc(doc);
+    xmlCleanupParser();
+
+    return SUCCESS;
+}
+
 int main (int argc, char **argv) {
     int return_code = SUCCESS;
     int program_code = SUCCESS;
@@ -155,7 +189,7 @@ int main (int argc, char **argv) {
                 continue;
             }
 
-            return_code = xml_process(TMP_FILENAME, write_time, write_url, write_author);
+            return_code = xml_process();
             if (return_code) {
                 program_code = return_code;
                 continue;

@@ -5,8 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+
 #include "error_handling.h"
-#include "xml.h"
+#include "rss_parser.h"
+#include "atom_parser.h"
 #include "ssl.h"
 
 #define is ==

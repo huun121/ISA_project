@@ -1,6 +1,6 @@
 PROJ_NAME=feedreader
-SRC_FILES=$(PROJ_NAME).c xml.c ssl.c
-HEADER_FILES=$(PROJ_NAME).h xml.h ssl.h error_handling.h
+SRC_FILES=$(PROJ_NAME).c rss_parser.c atom_parser.c ssl.c
+HEADER_FILES=$(PROJ_NAME).h rss_parser.h atom_parser.h ssl.h error_handling.h
 XMLAGS!=xml2-config --cflags --libs
 XMLAGS?=$(shell xml2-config --cflags --libs)
 SSL_ARGS=-lssl -lcrypto

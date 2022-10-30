@@ -9,6 +9,7 @@
 #define ERR_M_SSL_TLS "Chyba: nepodařilo se ověřit platnost certifikátu\n"
 #define ERR_M_INTERN "Chyba: interní chyba programu\n"
 #define ERR_M_XML "Chyba: nebylo možné zpracovat xml soubor\n"
+#define ERR_M_XML_UNKNOWN "Chyba: nepodporovaný formát xml\n"
 #define ERR_M_FEEDFILE_OPEN "Chyba: nebylo možné otevřít soubor: %s\n"
 #define ERR_M_FILE "Chyba: chyba při práci se soubory\n"
 #define ERR_M_CONNECTION "Chyba: nepodařilo se navázat spojení s %s\n"
