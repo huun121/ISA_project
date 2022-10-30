@@ -1,3 +1,10 @@
+// Čtečka novinek ve formátu Atom a RSS s podporou TLS
+// Projekt ISA
+// VUT FIT v Brno
+//
+// Autor: Pavel Hurdalek (xhurda01)
+// Datum: 30.10.2022
+
 #ifndef _FEEDREADER_H_
 #define _FEEDREADER_H_
 
@@ -27,3 +34,5 @@ char *url;
 char *feedfile;
 
 #endif
+
+// Konec souboru feedreader.h

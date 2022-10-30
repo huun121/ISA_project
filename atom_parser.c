@@ -1,3 +1,10 @@
+// Čtečka novinek ve formátu Atom a RSS s podporou TLS
+// Projekt ISA
+// VUT FIT v Brno
+//
+// Autor: Pavel Hurdalek (xhurda01)
+// Datum: 30.10.2022
+
 #include "atom_parser.h"
 
 void atom_root_parse (xmlNode *root_node, int write_updated, int write_link, int write_autor) {
@@ -93,3 +100,4 @@ void atom_link_print (xmlNode *link_node) {
     printf("URL: není uvedena\n");
 }
 
+// Konec souboru atom_parser.c

@@ -1,3 +1,10 @@
+// Čtečka novinek ve formátu Atom a RSS s podporou TLS
+// Projekt ISA
+// VUT FIT v Brno
+//
+// Autor: Pavel Hurdalek (xhurda01)
+// Datum: 30.10.2022
+
 #include "ssl.h"
 
 SSL_CTX* ctx = NULL;
@@ -232,9 +239,10 @@ int url_split (const char *prefix, char *url_address) {
 }
 
 int remove_tmp_file (char *tmp_filename) {
-    (void) tmp_filename;
     if (!remove(tmp_filename)) {
         return ERROR_INTERN;
     }
     return SUCCESS;
 }
+
+// Konec souboru ssl.c

@@ -1,3 +1,10 @@
+// Čtečka novinek ve formátu Atom a RSS s podporou TLS
+// Projekt ISA
+// VUT FIT v Brno
+//
+// Autor: Pavel Hurdalek (xhurda01)
+// Datum: 30.10.2022
+
 #ifndef _SSH_H_
 #define _SSH_H_
 
@@ -42,3 +49,5 @@ int http_conection (const char *conn_hostname);
 int https_conection (const char *conn_hostname, char *certaddr, char *certfile);
 
 #endif
+
+// Konec souboru ssl.h

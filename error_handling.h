@@ -1,5 +1,14 @@
+// Čtečka novinek ve formátu Atom a RSS s podporou TLS
+// Projekt ISA
+// VUT FIT v Brno
+//
+// Autor: Pavel Hurdalek (xhurda01)
+// Datum: 30.10.2022
+
 #ifndef _ERROR_HANDLING_H_
 #define _ERROR_HANDLING_H_
+
+#include <stdio.h>
 
 #define ERR_M_SAME_ARGS "Chyba: dvakrát zadán stejný argument: %s\n"
 #define ERR_M_NO_PARAM "Chyba: nebyl zadán povinný parametr k argumentu: %s\n"
@@ -32,3 +41,5 @@
 #define ERROR_INTERN 42
 
 #endif
+
+// Konec souboru error_handling.c
