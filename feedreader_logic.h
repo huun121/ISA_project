@@ -20,19 +20,29 @@
 #include "atom_parser.h"
 #include "ssl.h"
 
+#ifndef OUT
+#define OUT stdout
+#endif
+
+#ifndef ERROUT
+#define ERROUT stderr
+#endif
+
+#ifndef is
 #define is ==
+#endif
 
 #define FEED_END 66 
 #define TMP_FILENAME "_tmp.feedreader"
 
-int write_time;
-int write_author;
-int write_url;
-char *certfile;
-char *certaddr;
-char *url;
-char *feedfile;
+int feedreader_url ();
+int feedreader_feedfile ();
+int xml_process ();
+int get_new_url(FILE *file, char *line, int buffer);
+void check_args ();
+void parse_args (int argc, char **argv);
+int feedreader ();
 
 #endif
 
-// Konec souboru feedreader.h
+// Konec souboru feedreader_logic.h

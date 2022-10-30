@@ -8,16 +8,17 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 
 #### Datum vytvoření: 30.10.2022
 
-## Platforma
+## Platforma:
 * Linux
 
-## Soubory
+## Soubory:
 * atom_parser.c
 * atom_parser.h
 * error_handling.h
 * feedreader_tester.c
+* feedreader_tester.h
 * feedreader.c
-* feedreader.d
+* feedreader.h
 * makefile
 * README.md - základní informace o projektu
 * manual.pdf - manuál
@@ -26,14 +27,14 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 * ssl.c
 * ssl.h
 
-### Instalace
+### Instalace:
 
 * Ve složce se soubory zadejte příkaz: make
 * Reinstalace také pouze pomocí příkazu: make
 * Testy spustíte pomocí příkazu: make test
 
 
-### Použití
+### Použití:
 ```
 ./feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]
 ./feedreader <-h | --help>
@@ -69,7 +70,7 @@ Electrofishing for Whales
 Aktualizace: 2017-03-09T00:00:00Z
 
 ```
-#### Použitý kód
+#### Použitý kód:
 * https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
 
 #### Zdroje:

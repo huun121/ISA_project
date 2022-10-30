@@ -10,6 +10,14 @@
 
 #include <stdio.h>
 
+#ifndef OUT
+#define OUT stdout
+#endif
+
+#ifndef ERROUT
+#define ERROUT stderr
+#endif
+
 #define ERR_M_SAME_ARGS "Chyba: dvakrát zadán stejný argument: %s\n"
 #define ERR_M_NO_PARAM "Chyba: nebyl zadán povinný parametr k argumentu: %s\n"
 #define ERR_M_NO_SOURCE "Chyba: nebyl zadán feedfile ani URL\n"
@@ -23,14 +31,14 @@
 #define ERR_M_FILE "Chyba: chyba při práci se soubory\n"
 #define ERR_M_CONNECTION "Chyba: nepodařilo se navázat spojení s %s\n"
 
-#define ERROR_MESSAGE(_message) fprintf(stderr, _message)
+#define ERROR_MESSAGE(_message) fprintf(ERROUT, _message)
     
 #define ERROR_MESSAGE_EXIT(_message, _errorCode) {\
     ERROR_MESSAGE(_message);\
     exit(_errorCode);\
 }
 
-#define ERROR_MESSAGE_WITH_ARG(_message, _argument) fprintf(stderr, _message, _argument)
+#define ERROR_MESSAGE_WITH_ARG(_message, _argument) fprintf(ERROUT, _message, _argument)
 
 #define SUCCESS 0
 #define ERROR_ARGUMENT_PARSE 1

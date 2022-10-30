@@ -13,6 +13,14 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
+#ifndef OUT
+#define OUT stdout
+#endif
+
+#ifndef ERROUT
+#define ERROUT stderr
+#endif
+
 void atom_root_parse (xmlNode *root_node, int write_updated, int write_link, int write_autor);
 void atom_entry_print (xmlNode *entry_node, int write_updated, int write_link, int write_autor, int *write_new_line);
 void atom_author_print (xmlNode *author_node);

@@ -1,6 +1,9 @@
 PROJ_NAME=feedreader
-SRC_FILES=$(PROJ_NAME).c rss_parser.c atom_parser.c ssl.c
-HEADER_FILES=$(PROJ_NAME).h rss_parser.h atom_parser.h ssl.h error_handling.h
+PROJ_TESTER=feedreader_tester
+SRC_FILES=$(PROJ_NAME).c $(PROJ_NAME)_logic.c rss_parser.c atom_parser.c ssl.c
+HEADER_FILES=$(PROJ_NAME)_logic.h rss_parser.h atom_parser.h ssl.h error_handling.h
+SRC_FILES_TESTER=$(PROJ_TESTER).c $(PROJ_NAME)_logic.c rss_parser.c atom_parser.c ssl.c
+HEADER_FILES_TESTER=$(PROJ_TESTER).h $(PROJ_NAME)_logic.h rss_parser.h atom_parser.h ssl.h error_handling.h
 XMLAGS!=xml2-config --cflags --libs
 XMLAGS?=$(shell xml2-config --cflags --libs)
 SSL_ARGS=-lssl -lcrypto
@@ -14,3 +17,12 @@ $(PROJ_NAME): clean
 
 clean:
 	rm -f *.o $(PROJ_NAME)
+
+test: clean_tester build_tester
+	@./$(PROJ_TESTER)
+
+build_tester:
+	@gcc $(SRC_FILES_TESTER) $(HEADER_FILES_TESTER) -o $(PROJ_TESTER) $(ARGS)
+
+clean_tester:
+	@rm -f *.o $(PROJ_TESTER)

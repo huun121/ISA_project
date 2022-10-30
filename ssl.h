@@ -19,6 +19,13 @@
 #define HTTPS 0
 #define HTTP 1
 
+#ifndef OUT
+#define OUT stdout
+#endif
+
+#ifndef ERROUT
+#define ERROUT stderr
+#endif
 
 #ifndef is
 #define is ==
