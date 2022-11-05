@@ -20,13 +20,9 @@
 #include "atom_parser.h"
 #include "ssl.h"
 
-#ifndef OUT
 #define OUT stdout
-#endif
 
-#ifndef ERROUT
 #define ERROUT stderr
-#endif
 
 #ifndef is
 #define is ==
@@ -39,9 +35,12 @@ int feedreader_url ();
 int feedreader_feedfile ();
 int xml_process ();
 int get_new_url(FILE *file, char *line, int buffer);
-void check_args ();
-void parse_args (int argc, char **argv);
+int check_args ();
+int parse_args (int argc, char **argv);
 int feedreader ();
+
+// pro testy
+void clear_globals();
 
 #endif
 

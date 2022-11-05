@@ -6,7 +6,7 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 
 #### Autor: Pavel Hurdálek (xhurda01)
 
-#### Datum vytvoření: 30.10.2022
+#### Datum vytvoření: 5.11.2022
 
 ## Platforma:
 * Linux
@@ -49,6 +49,8 @@ Parametry (nezáleží na pořadí):
 - -a -> pro každý záznam zobrazí jméno autora, či jeho e-mailová adresa
 - -u -> pro každý záznam zobrazí asociované URL
 - -h | --help -> výpis nápovědy
+
+**POZOR: není možné kombinovat přepínače, tedy např.: -Tau**
 
 #### Příklad spuštění:
 ```

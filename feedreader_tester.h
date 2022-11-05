@@ -17,6 +17,9 @@
 #include "ssl.h"
 #include "feedreader_logic.h"
 
+#define TEST_STDERR "_test_stderr.feedreader"
+#define TEST_STDOUT "_test_stdout.feedreader"
+
 #endif
 
 // Konec souboru feedreader_tester.h

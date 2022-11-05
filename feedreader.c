@@ -8,9 +8,11 @@
 #include "feedreader_logic.h"
 
 int main (int argc, char **argv) {
-    parse_args (argc, argv);
+    int errcode = parse_args (argc, argv);
+    if (errcode) return errcode;
 
-    check_args ();
+    errcode = check_args ();
+    if (errcode) return errcode;
 
     return feedreader ();
 }

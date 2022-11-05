@@ -39,7 +39,17 @@ void print_help () {
     \rChybové hlášky jsou vypisovány na standartní chybový výstup.\n");
 }
 
-void parse_args (int argc, char **argv) {
+void clear_globals() {
+    write_time = 0;
+    write_author = 0;
+    write_url = 0;
+    certfile = NULL;
+    certaddr = NULL;
+    url = NULL;
+    feedfile = NULL;
+}
+
+int parse_args (int argc, char **argv) {
     (void) argc;
     for (int i = 1; i < argc; i++) {
 
@@ -58,7 +68,7 @@ void parse_args (int argc, char **argv) {
             i++;
             if (i >= argc) {
                 ERROR_MESSAGE_WITH_ARG(ERR_M_NO_PARAM, argument);
-                exit(ERROR_ARGUMENT_PARSE);
+                return ERROR_ARGUMENT_PARSE;
             }
             if (!certfile) certfile = argv[i];
             else ERROR_MESSAGE_WITH_ARG(ERR_M_SAME_ARGS, argument);
@@ -66,7 +76,7 @@ void parse_args (int argc, char **argv) {
             i++;
             if (i >= argc) {
                 ERROR_MESSAGE_WITH_ARG(ERR_M_NO_PARAM, argument);
-                exit(ERROR_ARGUMENT_PARSE);
+                return ERROR_ARGUMENT_PARSE;
             }
             if (!certaddr) certaddr = argv[i];
             else ERROR_MESSAGE_WITH_ARG(ERR_M_SAME_ARGS, argument);
@@ -74,27 +84,31 @@ void parse_args (int argc, char **argv) {
             i++;
             if (i >= argc) {
                 ERROR_MESSAGE_WITH_ARG(ERR_M_NO_PARAM, argument);
-                exit(ERROR_ARGUMENT_PARSE);
+                return ERROR_ARGUMENT_PARSE;
             }
             if (!feedfile) feedfile = argv[i];
             else ERROR_MESSAGE_WITH_ARG(ERR_M_SAME_ARGS, argument);
         } else if (!strcmp(argument, "-h") || !strcmp(argument, "--help")) {
             print_help();
-            exit(SUCCESS);
+            return SUCCESS;
         } else {
             if (!url) url = argv[i];
             else {argument = "URL adresa"; ERROR_MESSAGE_WITH_ARG(ERR_M_SAME_ARGS, argument);}
         }
     }
+    return SUCCESS;
 }
 
-void check_args () {
+int check_args () {
     if (!feedfile && !url){
-        ERROR_MESSAGE_EXIT(ERR_M_NO_SOURCE, ERROR_ARGUMENT_PARSE);
+        ERROR_MESSAGE(ERR_M_NO_SOURCE);
+        return ERROR_ARGUMENT_PARSE;
     }
     if (feedfile && url){
-        ERROR_MESSAGE_EXIT(ERR_M_TWO_SOURCES, ERROR_ARGUMENT_PARSE);
+        ERROR_MESSAGE(ERR_M_TWO_SOURCES);
+        return ERROR_ARGUMENT_PARSE;
     }
+    return SUCCESS;
 }
 
 int get_new_url(FILE *file, char *line, int buffer) {

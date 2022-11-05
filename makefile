@@ -16,7 +16,7 @@ $(PROJ_NAME): clean
 	gcc $(SRC_FILES) $(HEADER_FILES) -o $(PROJ_NAME) $(ARGS)
 
 clean:
-	rm -f *.o $(PROJ_NAME)
+	@rm -f *.o $(PROJ_NAME)
 
 test: clean_tester build_tester
 	@./$(PROJ_TESTER)

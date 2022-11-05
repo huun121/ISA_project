@@ -33,11 +33,6 @@
 
 #define ERROR_MESSAGE(_message) fprintf(ERROUT, _message)
     
-#define ERROR_MESSAGE_EXIT(_message, _errorCode) {\
-    ERROR_MESSAGE(_message);\
-    exit(_errorCode);\
-}
-
 #define ERROR_MESSAGE_WITH_ARG(_message, _argument) fprintf(ERROUT, _message, _argument)
 
 #define SUCCESS 0
@@ -45,6 +40,8 @@
 #define ERROR_ARGUMENT_PARSE_URL 2
 #define ERROR_SSL 3
 #define ERROR_XML 4
+
+#define ERROR_TESTS 8
 #define ERROR_UNDEFINED 9
 #define ERROR_INTERN 42
 
