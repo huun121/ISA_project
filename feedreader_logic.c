@@ -206,7 +206,7 @@ int feedreader_feedfile () {
 
 int feedreader () {
     init_ssl ();
-    
+
     // pouze URL
     if (feedfile is NULL) {
         return feedreader_url(); 

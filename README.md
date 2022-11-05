@@ -17,8 +17,7 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 * error_handling.h
 * feedreader_logic.c
 * feedreader_logic.h
-* feedreader_tester.c
-* feedreader_tester.h
+* feedreader_tester.sh
 * feedreader.c
 * makefile
 * README.md - základní informace o projektu
@@ -27,6 +26,7 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 * rss_parser.h
 * ssl.c
 * ssl.h
+* tests/* - složka s testy
 
 ### Instalace:
 
@@ -40,6 +40,8 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 ./feedreader <URL | -f <feedfile>> [-c <certfile>] [-C <certaddr>] [-T] [-a] [-u]
 ./feedreader <-h | --help>
 ```
+**POZOR: není možné kombinovat přepínače, tedy např.: -Tau**
+
 Parametry (nezáleží na pořadí):
 - URL -> Url adresa zdroje
 - -f \<feedfile\> -> název souboru s url adresami zdrojů
@@ -49,6 +51,10 @@ Parametry (nezáleží na pořadí):
 - -a -> pro každý záznam zobrazí jméno autora, či jeho e-mailová adresa
 - -u -> pro každý záznam zobrazí asociované URL
 - -h | --help -> výpis nápovědy
+
+### Návratové hodnoty:
+* 0 Průběh bez chyby.
+* \> 0 Vyskytla se chyba (bližší specifikace viz manual.pdf).
 
 #### Příklad spuštění:
 ```

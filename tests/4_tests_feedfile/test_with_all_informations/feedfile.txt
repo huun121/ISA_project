@@ -1,0 +1,8 @@
+#Atom
+https://what-if.xkcd.com/feed.atom
+
+#RSS
+https://www.rssboard.org//files/sample-rss-2.xml
+
+
+

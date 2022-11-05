@@ -203,14 +203,12 @@ int url_parse (char *url_address) {
         host_port = "443";
         http = HTTPS;
         if (url_split("https://", url_address)) {
-            ERROR_MESSAGE(ERR_WRONG_URL);
             return ERROR_INTERN;
         }
     } else if (!strncmp(url_address, "http://", strlen("http://"))) {
         host_port = "80";
         http = HTTP;
         if (url_split("http://", url_address)) {
-            ERROR_MESSAGE(ERR_WRONG_URL);
             return ERROR_INTERN;
         }
     } else {

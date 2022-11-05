@@ -1,0 +1,1 @@
+./feedreader -f tests/4_tests_feedfile/test_with_all_informations/feedfile.txt -T -a -u

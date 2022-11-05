@@ -1,0 +1,1 @@
+Chyba: byl zadán feedfile i URL

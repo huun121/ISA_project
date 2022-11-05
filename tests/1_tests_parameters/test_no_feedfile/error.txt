@@ -1,0 +1,1 @@
+Chyba: nebyl zadán povinný parametr k argumentu: -f

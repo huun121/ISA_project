@@ -1,0 +1,2 @@
+hts://what-if.xkcd.com/feed.atom
+https://what-if.xkcd.com/feed.atom

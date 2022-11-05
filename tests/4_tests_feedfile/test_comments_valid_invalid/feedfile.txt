@@ -1,0 +1,8 @@
+https://what-if.xkcd.com/feed.atom
+
+#https://what-if.xkcd.com/feed.atom
+hts://what-if.xkcd.com/feed.atom
+https://what-if.xkcd.com/feed.atom
+
+#rss
+https://www.rssboard.org//files/sample-rss-2.xml

@@ -1,0 +1,1 @@
+./feedreader -f tests/4_tests_feedfile/test_only_comments/feedfile.txt
