@@ -169,8 +169,8 @@ void ctx_dtor () {
     }
 }
 
-// nastaví certifikáty, vrací 1 v případě chyby
 int ctx_set_cert_location (char *certaddr, char *certfile) {
+    // nastaví certifikáty, vrací ERROR_INTERN v případě chyby
     if (certaddr is NULL && certfile is NULL) {
         if (!SSL_CTX_set_default_verify_paths(ctx)) {
             ERROR_MESSAGE(ERR_M_SSL_TLS);

@@ -39,20 +39,97 @@
 #define BUFFER_SMALL 256
 #endif
 
+/**
+ * Inicializace knihovny openssl.
+*/
 void init_ssl ();
+
+/**
+ * Uvolnění zdrojů požívaných modulem.
+*/
 void free_ssl ();
+
+/**
+ * Vytvoření objektu SSL_CTX *
+ * 
+ * @returns 0 průběh bez chyby
+*/
 int ctx_ctor ();
+
+/**
+ * Dealokace objektu SSL_CTX *
+*/
 void ctx_dtor ();
+
+/**
+ * Nastaví umístění certifikátů.
+ * 
+ * @param certaddr adresář s certifikáty
+ * @param certfile soubor s certifikáty
+ * @returns 0 průběh bez chyby
+*/
 int ctx_set_cert_location (char *certaddr, char *certfile);
+
+/**
+ * Sestrojí hostname pro připojení (doména:port).
+ * 
+ * @param conn_hostname destinace
+ * @param host_domain doména
+ * @param host_port port
+*/
 void make_conn_hostname (char *conn_hostname, const char *host_domain, const char *host_port);
+
+/**
+ * Zpracování url adresy. Navázání spojení (ověření platnosti SSL/TLS) stžení dat do souboru.
+ *
+ * @param tmp_filename jmeno souboru
+ * @param url_adress url adresa
+ * @param certaddr adresář s certifikáty
+ * @param certfile soubor s certifikáty
+ * @returns 0 průběh bez chyby
+*/
 int ssl_url_process (char *tmp_filename, char *url_adress, char *certaddr, char *certfile);
 
+/**
+ * Odtrhnutí prefixu od url adresy (např. http://)
+ * 
+ * @param url_adress url adresa
+ * @param prefix prefix k odstranění
+ * @returns 0 průběh bez chyby
+*/
 int url_split (const char *prefix, char *url_address);
+
+/**
+ * Zjištění protokolu a odtrhnutí prefixu.
+ * 
+ * @param url_adress url adresa
+ * @returns 0 průběh bez chyby
+*/
 int url_parse (char *url_address);
 
+/**
+ * Odstranění dočasného souboru
+ * 
+ * @returns 0 soubor odstraněn
+*/
 int remove_tmp_file (char *tmp_filename);
 
+/**
+ * Navázaní http spojení.
+ * 
+ * @param conn_hostname hostname pro připojení
+ * @returns 0 průběh bez chyby
+*/
 int http_conection (const char *conn_hostname);
+
+/**
+ * Navázaní https spojení.
+ * 
+ * @param conn_hostname hostname pro připojení
+ * @param certaddr adresář s certifikáty
+ * @param certfile soubor s certifikáty
+ * @returns 0 průběh bez chyby
+*/
 int https_conection (const char *conn_hostname, char *certaddr, char *certfile);
 
 #endif

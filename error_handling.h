@@ -18,6 +18,7 @@
 #define ERROUT stderr
 #endif
 
+// chybové hlášky
 #define ERR_M_SAME_ARGS "Chyba: dvakrát zadán stejný argument: %s\n"
 #define ERR_M_NO_PARAM "Chyba: nebyl zadán povinný parametr k argumentu: %s\n"
 #define ERR_M_NO_SOURCE "Chyba: nebyl zadán feedfile ani URL\n"
@@ -40,6 +41,7 @@
 
 #define ERROR_MESSAGE_WITH_ARG(_message, _argument) fprintf(ERROUT, _message, _argument)
 
+// návratové hodnoty
 #define SUCCESS 0
 #define ERROR_ARGUMENT_PARSE 1
 #define ERROR_ARGUMENT_PARSE_URL 2
