@@ -20,7 +20,7 @@ Program, který vypisuje informace uvedené ve stažených zdrojích (feed) ve f
 * feedreader_tester.sh
 * feedreader.c
 * makefile
-* README.md - základní informace o projektu
+* README - základní informace o projektu
 * manual.pdf - manuál
 * rss_parser.c
 * rss_parser.h
