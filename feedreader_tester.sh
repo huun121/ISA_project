@@ -66,7 +66,7 @@ for type in ./tests/*; do
                 continue;
         fi
 
-        if [ $err_code != 0 ]; then
+        if [ $err_code != 0 ] && [ $type_name != "4_tests_feedfile" ]; then
             echo -e "$GREEN TEST $test_name uspěl.\n$NOCOLOR"
             ((success_tests++))
             continue;

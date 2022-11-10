@@ -170,14 +170,22 @@ int feedreader_feedfile () {
 
     char line[BUFFER];
     int write_new_line = 0;
+    int error_actual = 0;
     while (get_new_url(file, line, BUFFER) is SUCCESS) {
-        if (write_new_line) fprintf(OUT, "\n");
+        if (error_actual) {
+            if (write_new_line) fprintf(ERROUT, "\n");
+            error_actual = 0;
+        } else {
+            if (write_new_line) fprintf(OUT, "\n");
+        }
+
         url = line;
 
         // Odstranění případného znaku '\n'
 
         // -----              -----
         // Taken code from stackoverflow.com
+        // date: 30.10.2022
         // url: https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
         // answer author: https://stackoverflow.com/users/485088/tim-%c4%8cas
         url[strcspn(url, "\n")] = 0;
@@ -187,12 +195,14 @@ int feedreader_feedfile () {
         free_ssl();
         if (error_code) {
             return_code = error_code;
+            error_actual = 1;
             continue;
         }
 
         error_code = xml_process();
         if (error_code) {
             return_code = error_code;
+            error_actual = 1;
             continue;
         }
         write_new_line = 1;            
