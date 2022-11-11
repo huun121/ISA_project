@@ -5,6 +5,21 @@
 // Autor: Pavel Hurdalek (xhurda01)
 // Datum: 30.10.2022
 
+// -----              -----
+// Implementation inspired from online tutorial: Secure programming with the OpenSSL API
+// Author: Kenneth Ballard
+// Published: 21.7.2004
+// Accessed: 30.10.2022
+// URL: https://developer.ibm.com/tutorials/l-openssl/
+// -----              -----
+
+// -----              -----
+// Implementation inspired from Wikipedia page: SSL/TLS Client
+// License: the OpenSSL License
+// Accessed: 30.10.2022
+// URL: https://wiki.openssl.org/index.php/SSL/TLS_Client
+// -----              -----
+
 #include "ssl.h"
 
 SSL_CTX* ctx = NULL;
